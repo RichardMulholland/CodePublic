@@ -1,12 +1,12 @@
 
-from utils.utils import (
+from support_files.utils import (
     clear_terminal,
     extract_filtered_urls,
     get_final_url_and_filename,
     download_image,
     replace_url_with_image_path  # Now imported from utils
 )
-from config.config import (
+from support_files.config import (
     USER_SESSION,
     BASE_URL,
     ASSETS_ENDPOINT,
