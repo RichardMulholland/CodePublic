@@ -1,3 +1,29 @@
+
+"""
+File: utils.py
+
+Description:
+    Contains utility functions for the Markdown Image Downloader, including:
+    - Clearing the terminal
+    - Extracting and filtering image URLs
+    - Handling HTTP requests and downloads
+    - Replacing URLs in Markdown content with local image paths
+
+Author: Richard Mulholland
+Date: 2025-11-23
+
+Dependencies:
+    - os
+    - requests
+    - re
+    - urllib.parse
+    - pathlib
+
+Usage:
+    Import these functions into main.py or other scripts as needed.
+
+
+"""
 import os
 import requests
 import re

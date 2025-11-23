@@ -1,4 +1,28 @@
 
+"""
+File: main.py
+
+Description:
+    Entry point for the Markdown Image Downloader.
+    Allows the user to select a Markdown file, extracts image URLs, downloads images,
+    updates the Markdown file to use local image paths, and provides a summary of the process.
+
+Author: Richard Mulholland
+Date: 2025-11-23
+
+Dependencies:
+    - tkinter
+    - rich
+    - requests
+    - utils.py
+    - config.py
+
+Usage:
+    Run this script to select a Markdown file and automatically download and relink images.
+    I found it best to run from a bash terminal and not from PowerShell.
+
+
+"""
 from support_files.utils import (
     clear_terminal,
     extract_filtered_urls,
