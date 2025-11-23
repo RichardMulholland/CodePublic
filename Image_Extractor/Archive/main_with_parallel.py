@@ -21,7 +21,8 @@ Usage:
     Run this script to select a Markdown file and automatically download and relink images.
     I found it best to run from a bash terminal and not from PowerShell.
 
-
+Version:
+    002 - main with parallel processing but only one progress bar
 """
 from support_files.utils import (
     clear_terminal,

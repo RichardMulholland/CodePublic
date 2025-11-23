@@ -21,20 +21,21 @@ Usage:
     Run this script to select a Markdown file and automatically download and relink images.
     I found it best to run from a bash terminal and not from PowerShell.
 
-
+Version:
+    003 - main_parallel_multi_progress
 """
+
 from support_files.utils import (
     clear_terminal,
     extract_filtered_urls,
     get_final_url_and_filename,
-    download_image,
-    replace_url_with_image_path
+    replace_url_with_image_path,
 )
 from support_files.config import (
     USER_SESSION,
     BASE_URL,
     ASSETS_ENDPOINT,
-    DEFAULT_FILE_PATH
+    DEFAULT_FILE_PATH,
 )
 import tkinter as tk
 from tkinter import filedialog
@@ -42,7 +43,16 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from rich.progress import Progress
+from rich.progress import (
+    Progress,
+    BarColumn,
+    TextColumn,
+    TimeElapsedColumn,
+    DownloadColumn,
+    TaskProgressColumn,
+)
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import os
 
 # Clear terminal at the start
 clear_terminal()
@@ -58,7 +68,6 @@ file_path = filedialog.askopenfilename(
     title="Select a Markdown file",
     filetypes=[("Markdown files", "*.md")]
 )
-
 if not file_path:
     console.print("[red]No file selected. Exiting.[/red]")
     exit()
@@ -70,7 +79,6 @@ with open(file_path, "r", encoding="utf-8") as f:
 # Extract and filter URLs (returns list of (url, filename) tuples)
 filtered_urls = extract_filtered_urls(content, BASE_URL, ASSETS_ENDPOINT)
 total_urls = len(filtered_urls)
-#console.print(f"[bold green]Total filtered URLs: {total_urls}[/bold green]")
 
 # Prepare images directory
 md_dir = Path(file_path).parent
@@ -82,48 +90,75 @@ downloaded = 0
 already_exists = 0
 failed_images = []
 
-# Progress bar for downloads
-with Progress() as progress:
-    task = progress.add_task(f"[cyan]Downloading images... ({total_urls} total)", total=total_urls)
-
-    for url, filename in filtered_urls:
-        # Check if any file with this base name exists in the images directory (any extension)
-        existing_files = list(images_dir.glob(f"{filename}.*"))
-        if existing_files:
-            already_exists += 1
-            progress.update(task, advance=1)
-            continue  # Skip download if file exists
-
-        # Now get the redirected URL and download
-        final_url, redirected_filename, response = get_final_url_and_filename(url, USER_SESSION)
-        if not final_url or not response:
-            failed_images.append(filename)
-            progress.update(task, advance=1)
-            continue
-
-        # Use the original filename, but try to get the extension from the redirected URL
-        ext = Path(redirected_filename).suffix if redirected_filename else ""
-        image_path = images_dir / f"{filename}{ext}"
-
-        if download_image(response, image_path):
-            downloaded += 1
-        
-            # Check if image exists
+def download_image_task(url, filename, images_dir, session, progress, task_id):
+    # Check if any file with this base name exists in the images directory (any extension)
+    existing_files = list(images_dir.glob(f"{filename}.*"))
+    if existing_files:
+        progress.update(task_id, completed=1)
+        return url, None, 'exists'
+    # Get the redirected URL and download
+    final_url, redirected_filename, response = get_final_url_and_filename(url, session)
+    ext = Path(redirected_filename).suffix if redirected_filename else ""
+    image_path = images_dir / f"{filename}{ext}"
+    image_rel_path = f"Images/{filename}{ext}"
+    if final_url and response:
+        total = int(response.headers.get('content-length', 0))
+        progress.update(task_id, total=total)
+        try:
+            with open(image_path, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+                        progress.update(task_id, advance=len(chunk))
             if image_path.exists():
-                # Compute relative path from Markdown file to image
-                #image_rel_path = os.path.relpath(image_path, md_dir)
-                image_rel_path = f"Images/{filename}{ext}"
-                # Replace the URL in the Markdown content
-                content = replace_url_with_image_path(content, url, image_rel_path)
-                
-        else:
-            failed_images.append(f"{filename}{ext}")
-        progress.update(task, advance=1)
+                progress.update(task_id, completed=total)
+                return url, image_rel_path, 'downloaded'
+        except Exception as e:
+            pass
+    progress.update(task_id, completed=1)
+    return url, None, 'failed'
+
+# Progress bars for each image, elapsed time only
+with Progress(
+    TextColumn("[progress.description]{task.description}"),
+    BarColumn(),
+    TaskProgressColumn(),
+    DownloadColumn(),
+    TimeElapsedColumn(),  # Only elapsed time
+    console=console,
+    transient=False,
+) as progress:
+    # Prepare download tasks and progress bars
+    task_ids = [
+        progress.add_task(f"Downloading {filename}", total=1)
+        for url, filename in filtered_urls
+    ]
+    results = []
+    # Submit download tasks in parallel
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [
+            executor.submit(
+                download_image_task, url, filename, images_dir, USER_SESSION, progress, task_id
+            )
+            for (url, filename), task_id in zip(filtered_urls, task_ids)
+        ]
+        for future in as_completed(futures):
+            url, image_rel_path, status = future.result()
+            results.append((url, image_rel_path, status))
+
+# After all downloads, update the Markdown content
+for url, image_rel_path, status in results:
+    if status == 'downloaded' and image_rel_path:
+        content = replace_url_with_image_path(content, url, image_rel_path)
+        downloaded += 1
+    elif status == 'exists':
+        already_exists += 1
+    else:
+        failed_images.append(url)
 
 # Write the updated content back to the Markdown file
 with open(file_path, "w", encoding="utf-8") as f:
     f.write(content)
-
 
 # Logging output
 summary = Table(show_header=False, box=None)
@@ -132,9 +167,7 @@ summary.add_row("URLs found:", str(total_urls))
 summary.add_row("Images downloaded:", str(downloaded))
 summary.add_row("Already existed:", str(already_exists))
 summary.add_row("Failed downloads:", str(len(failed_images)))
-
 console.print(Panel(summary, title="Markdown Image Downloader", expand=False))
-
 if failed_images:
     failed_panel = Panel(
         "\n".join(str(img) for img in failed_images),
