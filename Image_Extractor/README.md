@@ -1,9 +1,7 @@
 # 🖼️ Image Extractor
-
 A Python utility that automatically extracts and downloads images from GitHub markdown files.
 
 ## 🚀 Overview
-
 Image Extractor is a command-line tool designed to scan markdown files, identify image URLs hosted on GitHub's user attachments, and download them locally into an `Images` folder within the markdown file's directory.
 
 ## 📚 Table of Contents
@@ -19,7 +17,6 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
 - [📝 Notes](#-notes)
 
 ## ✨ Features
-
 - **Interactive File Selection**: Opens a file dialog to select markdown files from your system
 - **Smart URL Extraction:** Finds and filters GitHub asset URLs from markdown content.
 - **Automatic Directory Management**: Creates an `Images` folder automatically if it doesn't exist
@@ -29,7 +26,6 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
 - **Rich Console Output**: Beautiful, formatted output with tables and panels using the `rich` library
 
 ## 🛠️ Requirements
-
 - Python 3.6+
 - Dependencies:
   - `requests` - For HTTP requests and file downloads
@@ -37,7 +33,6 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
   - `tkinter` - For file dialog (usually included with Python)
 
 ## 📦 Installation
-
 1. Clone or download this project
 2. Install required dependencies:
    ```bash
@@ -45,7 +40,6 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
    ```
 
 ## ⚡ Usage
-
 Run the main script:
 
 ```bash
@@ -64,7 +58,6 @@ The program will:
    - Number of failed downloads (if any)
 
 ## 🗂️ Project Structure
-
 ```
 Image_Extractor/
 ├── main.py              # Main entry point
@@ -75,7 +68,6 @@ Image_Extractor/
 ```
 
 ## ⚙️ Configuration
-
 The `config/config.py` file contains:
 
 - `BASE_URL`: GitHub domain (https://github.com)
@@ -84,7 +76,6 @@ The `config/config.py` file contains:
 - `USER_SESSION`: Session token for authenticated requests (required for private images)
 
 ### 🔑 Getting Your GitHub User Session Token
-
 To download images (especially private ones), you need to provide your GitHub `user_session` token:
 
 1. **Log in to GitHub** in your web browser
@@ -108,7 +99,6 @@ To download images (especially private ones), you need to provide your GitHub `u
 Keep your session token private. Do not commit it to public repositories or share it with others.
 
 ## 🧠 How It Works
-
 1. **URL Extraction**: Regex pattern finds all HTTP/HTTPS URLs in the markdown file
 2. **Filtering**: Identifies only GitHub asset URLs matching the base URL and assets endpoint
 3. **Filename Extraction**: Parses the filename from the URL path
@@ -117,7 +107,6 @@ Keep your session token private. Do not commit it to public repositories or shar
 6. **Error Tracking**: Records any failed downloads for user reference
 
 ## 📊 Example Output
-
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Markdown Image Downloader                 ┃
@@ -131,7 +120,6 @@ Keep your session token private. Do not commit it to public repositories or shar
 ```
 
 ## 📝 Notes
-
 - Images are saved to `Images/` subdirectory of the markdown file's location
 - The tool uses HTTP sessions and user agent headers to handle authenticated downloads
 - File extensions are automatically detected from the final redirected URL
