@@ -7,8 +7,6 @@ A Python utility that automatically extracts and downloads images from GitHub ma
 Image Extractor is a command-line tool designed to scan markdown files, identify image URLs hosted on GitHub's user attachments, and download them locally into an `Images` folder within the markdown file's directory.
 
 ## 📚 Table of Contents
-
-- #-overview
 - [✨ Features](#-features)
 - [🛠️ Requirements](#️-requirements)
 - [📦 Installation](#-Installation)
