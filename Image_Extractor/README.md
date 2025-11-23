@@ -68,7 +68,7 @@ Image_Extractor/
 ```
 
 ## ⚙️ Configuration
-The `config/config.py` file contains:
+The `support_files/config.py` file contains:
 
 - `BASE_URL`: GitHub domain (https://github.com)
 - `ASSETS_ENDPOINT`: GitHub user attachments endpoint (/user-attachments/assets)
@@ -89,7 +89,7 @@ To download images (especially private ones), you need to provide your GitHub `u
    - Look for the cookie named `user_session`
    - Copy the entire value
 5. **Update Configuration**:
-   - Open `config/config.py`
+   - Open `support_files/config.py`
    - Replace the `USER_SESSION` value with your token:
      ```python
      USER_SESSION = "your_copied_token_here"
