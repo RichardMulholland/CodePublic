@@ -10,12 +10,15 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
 
 - #-overview
 - [✨ Features](#-features)
-- [🛠️ Requirements](#️-requirements #-usage
-- #️-project-structure
-- #️-configuration
-  - #-getting-your-github-user-session-token
+- [🛠️ Requirements](#️-requirements)
+- [📦 Installation](#-Installation)
+- [⚡ Usage](#-usage)
+- [🗂️ Project Structure](#️-project-structure)
+- [⚙️ Configuration](#️-configuration)
+  - [🔑 Getting Your GitHub User Session Token](#-getting-your-github-user-session-token)
 - [🧠 How It Works](#-how-it-works)
-- #-notes
+- [📊 Example Output](#-Example-Output)
+- [📝 Notes](#-notes)
 
 ## ✨ Features
 
