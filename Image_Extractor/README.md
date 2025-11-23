@@ -1,17 +1,3 @@
-
-## 📚 Table of Contents
-
-- [🖼️ Imagextractor
-- #-overview
-- #-features
-- [🛠️ Requirements](#️-requirements #-usage
-- #️-project-structure
-- #️-configuration
-  - #-getting-your-github-user-session-token
-- [🧠 How It Works](#-how-it-works)
-- #-notes
-
-
 # 🖼️ Image Extractor
 
 A Python utility that automatically extracts and downloads images from GitHub markdown files.
@@ -20,23 +6,16 @@ A Python utility that automatically extracts and downloads images from GitHub ma
 
 Image Extractor is a command-line tool designed to scan markdown files, identify image URLs hosted on GitHub's user attachments, and download them locally into an `Images` folder within the markdown file's directory.
 
-📚 Table of Contents
+## 📚 Table of Contents
 
-#️-image-extractor
-#-overview
-#-features
-#️-requirements
-#-installation
-#-usage
-#️-project-structure
-#️-configuration
-
-#-getting-your-github-user-session-token
-
-
-#-how-it-works
-#-example-output
-#-notes
+- #-overview
+- [✨ Features](#-features)
+- [🛠️ Requirements](#️-requirements #-usage
+- #️-project-structure
+- #️-configuration
+  - #-getting-your-github-user-session-token
+- [🧠 How It Works](#-how-it-works)
+- #-notes
 
 ## ✨ Features
 
