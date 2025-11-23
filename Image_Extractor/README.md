@@ -1,22 +1,54 @@
-# Image Extractor
+
+## 📚 Table of Contents
+
+- [🖼️ Imagextractor
+- #-overview
+- #-features
+- [🛠️ Requirements](#️-requirements #-usage
+- #️-project-structure
+- #️-configuration
+  - #-getting-your-github-user-session-token
+- [🧠 How It Works](#-how-it-works)
+- #-notes
+
+
+# 🖼️ Image Extractor
 
 A Python utility that automatically extracts and downloads images from GitHub markdown files.
 
-## Overview
+## 🚀 Overview
 
 Image Extractor is a command-line tool designed to scan markdown files, identify image URLs hosted on GitHub's user attachments, and download them locally into an `Images` folder within the markdown file's directory.
 
-## Features
+📚 Table of Contents
+
+#️-image-extractor
+#-overview
+#-features
+#️-requirements
+#-installation
+#-usage
+#️-project-structure
+#️-configuration
+
+#-getting-your-github-user-session-token
+
+
+#-how-it-works
+#-example-output
+#-notes
+
+## ✨ Features
 
 - **Interactive File Selection**: Opens a file dialog to select markdown files from your system
-- **URL Extraction**: Intelligently finds and filters GitHub asset URLs from markdown content
+- **Smart URL Extraction:** Finds and filters GitHub asset URLs from markdown content.
 - **Automatic Directory Management**: Creates an `Images` folder automatically if it doesn't exist
 - **Duplicate Detection**: Skips images that already exist locally (by filename)
 - **Progress Tracking**: Displays a real-time progress bar during downloads
 - **Error Handling**: Gracefully handles failed downloads and provides a summary report
 - **Rich Console Output**: Beautiful, formatted output with tables and panels using the `rich` library
 
-## Requirements
+## 🛠️ Requirements
 
 - Python 3.6+
 - Dependencies:
@@ -24,7 +56,7 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
   - `rich` - For formatted console output
   - `tkinter` - For file dialog (usually included with Python)
 
-## Installation
+## 📦 Installation
 
 1. Clone or download this project
 2. Install required dependencies:
@@ -32,7 +64,7 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
    pip install requests rich
    ```
 
-## Usage
+## ⚡ Usage
 
 Run the main script:
 
@@ -51,7 +83,7 @@ The program will:
    - Number of images that already existed
    - Number of failed downloads (if any)
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```
 Image_Extractor/
@@ -62,7 +94,7 @@ Image_Extractor/
     └── utils.py         # Utility functions for URL extraction and downloading
 ```
 
-## Configuration
+## ⚙️ Configuration
 
 The `config/config.py` file contains:
 
@@ -71,7 +103,7 @@ The `config/config.py` file contains:
 - `DEFAULT_FILE_PATH`: Default directory for file picker
 - `USER_SESSION`: Session token for authenticated requests (required for private images)
 
-### Getting Your GitHub User Session Token
+### 🔑 Getting Your GitHub User Session Token
 
 To download images (especially private ones), you need to provide your GitHub `user_session` token:
 
@@ -92,9 +124,10 @@ To download images (especially private ones), you need to provide your GitHub `u
      USER_SESSION = "your_copied_token_here"
      ```
 
-**Security Note**: Keep your session token private. Do not commit it to public repositories or share it with others.
+#### 🚨🚨🚨 Security Note 🚨🚨🚨
+Keep your session token private. Do not commit it to public repositories or share it with others.
 
-## How It Works
+## 🧠 How It Works
 
 1. **URL Extraction**: Regex pattern finds all HTTP/HTTPS URLs in the markdown file
 2. **Filtering**: Identifies only GitHub asset URLs matching the base URL and assets endpoint
@@ -103,7 +136,7 @@ To download images (especially private ones), you need to provide your GitHub `u
 5. **Download**: Follows redirects and downloads the image with proper authentication headers
 6. **Error Tracking**: Records any failed downloads for user reference
 
-## Example Output
+## 📊 Example Output
 
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -117,7 +150,7 @@ To download images (especially private ones), you need to provide your GitHub `u
 └──────────────────────────────────────-────┘
 ```
 
-## Notes
+## 📝 Notes
 
 - Images are saved to `Images/` subdirectory of the markdown file's location
 - The tool uses HTTP sessions and user agent headers to handle authenticated downloads
