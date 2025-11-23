@@ -24,6 +24,7 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
 - **Progress Tracking**: Displays a real-time progress bar during downloads
 - **Error Handling**: Gracefully handles failed downloads and provides a summary report
 - **Rich Console Output**: Beautiful, formatted output with tables and panels using the `rich` library
+- **Markdown Updates**: Replaces the GitHub url with the relative path of the downloaded image.
 
 ## 🛠️ Requirements
 - Python 3.6+
@@ -40,7 +41,7 @@ Image Extractor is a command-line tool designed to scan markdown files, identify
    ```
 
 ## ⚡ Usage
-Run the main script:
+Run the main script from a bash terminal. Powershell didn't work:
 
 ```bash
 python main.py
@@ -61,9 +62,8 @@ The program will:
 ```
 Image_Extractor/
 ├── main.py              # Main entry point
-├── config/
+├── support_files/
 │   └── config.py        # Configuration settings (URLs, session token, etc.)
-└── utils/
     └── utils.py         # Utility functions for URL extraction and downloading
 ```
 
